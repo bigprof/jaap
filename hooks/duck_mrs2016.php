@@ -180,7 +180,19 @@
 	*/
 
 	function duck_mrs2016_after_insert($data, $memberInfo, &$args){
-
+		/* insert ownership info into membership_userrecords manually */
+		$table_name='duck_mrs2016';
+		
+		/* member info */
+		$member_id=$memberInfo['username'];
+		$group_id=$memberInfo['groupID'];
+		
+		/* duck info */
+		$pk=$data['duck_id'];
+		$dateAdded=$data['creationdate'];
+		
+		
+		sql("INSERT INTO `membership_userrecords`(`tableName`, `pkValue`, `memberID`, `dateAdded`, `dateUpdated`, `groupID`) VALUES ('{$table_name}','{$pk}','{$member_id}','{$date_added}','{$date_updated}','{$group_id}')",$eo);
 		return TRUE;
 	}
 
@@ -232,6 +244,16 @@
 	*/
 
 	function duck_mrs2016_after_update($data, $memberInfo, &$args){
+		$date=date('j-n-Y');
+		$table_name='duck_mrs2016';
+		
+		/* member info */
+		$member_id=$memberInfo['username'];
+		$group_id=$memberInfo['groupID'];
+		
+		/* duck info */
+		$pk=$data['duck_id'];
+		sql("UPDATE `membership_userrecords` SET `dateUpdated`={$date} WHERE `tableName`={$table_name} and`pkValue`={$pk} and `memberID`={$member_id},`groupID`={$group_id}",$eo);
 
 		return TRUE;
 	}

@@ -180,6 +180,17 @@
 	*/
 
 	function trans_mrs2016_after_insert($data, $memberInfo, &$args){
+		/* check if user add quantity value or not */
+		if(!$data['quantity']) return FALSE;
+		
+		/* create child records in duck_mrs2016 table after inserting parent */
+		
+		$transaction_id=$data['transaction_id'];
+		$creation_date=date("j-n-Y");
+		
+		for($i=0;$i<$data['quantity'];$i++){
+			sql("insert into `duck_mrs2016` (`transaction_id`,`creationdate`) values ('{$transaction_id}','{$creation_date}')",$eo);
+		}
 
 		return TRUE;
 	}
@@ -207,7 +218,11 @@
 	*/
 
 	function trans_mrs2016_before_update(&$data, $memberInfo, &$args){
-
+		$transaction_id=$data['transaction_id'];
+		$res=sql("select * from trans_mrs2016 where transaction_id='{$transaction_id}' ",$eo);
+		$GLOBALS['old_data']=db_fetch_assoc($res);
+		
+		sql("delete from duck_mrs2016 where transaction_id='{$transaction_id}'",$eo);
 		return TRUE;
 	}
 
@@ -233,6 +248,16 @@
 
 	function trans_mrs2016_after_update($data, $memberInfo, &$args){
 
+		$new_quantity=$data['quantity'];
+		
+		$transaction_id=$data['transaction_id'];
+		$creation_date=date("j-n-Y");
+		
+		for($i=0;$i<$new_quantity;$i++){
+			sql("insert into `duck_mrs2016` (`transaction_id`,`creationdate`) values ('{$transaction_id}','{$creation_date}')",$eo);
+		}
+
+		
 		return TRUE;
 	}
 
