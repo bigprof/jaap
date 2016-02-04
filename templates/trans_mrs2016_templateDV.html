@@ -1,0 +1,230 @@
+<!-- Edit this file to change the layout of the detail view form -->
+
+<a name="detail-view"></a>
+<div class="panel-heading"><h3 class="panel-title"><strong><%%DETAIL_VIEW_TITLE%%></strong></h3></div>
+
+<div class="panel-body" id="trans_mrs2016_dv_container">
+	<!-- child links -->
+	<div class="row">
+		<div class="col-xs-12">
+			<a class="hidden-xs btn btn-default btn-lg pull-right hidden hspacer-sm" href="duck_mrs2016_view.php?filterer_transaction_id=<%%URLVALUE(transaction_id)%%>&<%%EMBEDDED%%>" id="duck_mrs2016_link"><i class="glyphicon glyphicon-list-alt"></i> Badeenden 2016</a>
+			<a class="visible-xs btn btn-default btn-lg btn-block hidden vspacer-sm" href="duck_mrs2016_view.php?filterer_transaction_id=<%%URLVALUE(transaction_id)%%>&<%%EMBEDDED%%>" id="xs_duck_mrs2016_link"><i class="glyphicon glyphicon-list-alt"></i> Badeenden 2016</a>
+			<input type="hidden" id="duck_mrs2016_hclink" value="duck_mrs2016_view.php?filterer_transaction_id=<%%URLVALUE(transaction_id)%%>&<%%EMBEDDED%%>">
+			<div class="clearfix"></div>
+		</div>
+	</div>
+	<hr>
+
+	<div class="row">
+		<!-- form inputs -->
+		<div class="col-md-8 col-lg-10" id="trans_mrs2016_dv_form">
+			<fieldset class="form-horizontal">
+
+				<div class="form-group">
+					<label for="transaction_id" class="control-label col-lg-3">Transactie nr</label>
+					<div class="col-lg-9">
+						<div class="form-control-static" id="transaction_id"><%%VALUE(transaction_id)%%></div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="firstname" class="control-label col-lg-3">Voornaam</label>
+					<div class="col-lg-9">
+						<input maxlength="50" type="text" class="form-control" name="firstname" id="firstname" value="<%%VALUE(firstname)%%>">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="lastname" class="control-label col-lg-3">Achternaam</label>
+					<div class="col-lg-9">
+						<input maxlength="50" type="text" class="form-control" name="lastname" id="lastname" value="<%%VALUE(lastname)%%>">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="email" class="control-label col-lg-3">Email</label>
+					<div class="col-lg-9">
+						<input maxlength="50" type="text" class="form-control" name="email" id="email" value="<%%VALUE(email)%%>">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="phone" class="control-label col-lg-3">Telefoon</label>
+					<div class="col-lg-9">
+						<input maxlength="20" type="text" class="form-control" name="phone" id="phone" value="<%%VALUE(phone)%%>">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="quantity" class="control-label col-lg-3">Aantal</label>
+					<div class="col-lg-9">
+						<input maxlength="4" type="text" class="form-control" name="quantity" id="quantity" value="<%%VALUE(quantity)%%>">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="amount" class="control-label col-lg-3">Bedrag <button class="btn btn-info btn-xs vspacer-sm" type="button" data-toggle="collapse" tabindex="-1" data-target="#amount-description"><i class="glyphicon glyphicon-info-sign"></i></button></label>
+					<div class="col-lg-9">
+						<span class="help-block collapse" id="amount-description"><div class="alert alert-info">Bedrag invullen met decimale punt</div></span>
+
+						<input maxlength="9" type="text" class="form-control" name="amount" id="amount" value="<%%VALUE(amount)%%>">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-lg-offset-3 col-lg-9">
+						<div class="checkbox"><label for="mailinglist"><input type="checkbox" name="mailinglist" id="mailinglist" value="1" <%%CHECKED(mailinglist)%%>> Mailinglijst</label>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="remarks" class="control-label col-lg-3">Opmerkingen</label>
+					<div class="col-lg-9">
+						<textarea class="form-control" name="remarks" id="remarks" rows="5"><%%VALUE(remarks)%%></textarea>
+					</div>
+				</div>
+
+			</fieldset>
+		</div>
+
+		<!-- DV action buttons -->
+		<div class="col-md-4 col-lg-2" id="trans_mrs2016_dv_action_buttons">
+			<div class="btn-toolbar">
+				<div class="btn-group-vertical btn-group-lg" style="width: 100%;">
+					<%%UPDATE_BUTTON%%>
+				</div><p></p>
+				<div class="btn-group-vertical btn-group-lg" style="width: 100%;">
+					<%%DESELECT_BUTTON%%>
+					<%%DVPRINT_BUTTON%%>
+					<%%DELETE_BUTTON%%>
+				</div><p></p>
+				<div class="btn-group-vertical btn-group-lg" style="width: 100%;">
+					<%%INSERT_BUTTON%%>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- child records -->
+	<hr>
+	<div class="row">
+		<div class="col-lg-10 col-lg-offset-1">
+			<div id="trans_mrs2016-children" class="children-tabs"></div>
+		</div>
+	</div>
+
+</div><!-- /div class="panel-body" -->
+	<script>
+		$j(function() {
+			var add_new_mode = (!$j('input[name=SelectedID]').val());
+			var embedded_mode = ($j('input[name=Embedded]').val() == 1);
+
+			$j('select, input[type=text], textarea').not(':disabled').eq(0).focus();
+			$j('form').eq(0).change(function(){
+				if($j(this).data('already_changed')) return;
+				if($j('#deselect').length) $j('#deselect').removeClass('btn-default').addClass('btn-warning').get(0).lastChild.data = " <%%TRANSLATION(Cancel)%%>";
+				$j(this).data('already_changed', true);
+			});
+
+			$j('a[href="<%%TRANSLATION(ImageFolder)%%>"]').click(function(){ return false; });
+
+			if(embedded_mode){
+				/* hide links to children tables in embedded mode */
+				$j('.detail_view a[id$=_link]').remove();
+
+				/* append embedded mode to all links */
+				var append_embedded = function(){
+					$j('a[href]:not([href^=#]):not([href^=javascript]):not([href$="Embedded=1"]):not([href*="link.php?t="]):not([href^="mailto:"])').each(
+						function(){
+							$j(this).attr('href', $j(this).attr('href') + '&Embedded=1');
+						}
+					);
+				}
+				setTimeout(append_embedded, 500);
+				setTimeout(append_embedded, 1500);
+				setTimeout(append_embedded, 2500);
+				setTimeout(append_embedded, 3500);
+			}
+
+			/* when no record is selected ('add new' mode) */
+			if(add_new_mode){
+				/* hide links to children tables */
+				$j('.detail_view a[id$=_link]').remove();
+			}else{
+				post(
+					'parent-children.php', {
+						ParentTable: 'trans_mrs2016',
+						SelectedID: '<%%VALUE(transaction_id)%%>',
+						Operation: 'show-children'
+					},
+					'trans_mrs2016-children'
+				);
+			}
+
+			if(!embedded_mode){
+				/* add a horizontal spacer to [add new parent] buttons that don't have a spacered element before them */
+				$j('.add_new_parent').prev(':not(.hspacer-lg)').next().addClass('hspacer-lg');
+
+				$j('.add_new_parent').click(function(){
+					var pt = $j(this).attr('id').replace(/_add_new$/, '');
+					modal_window({
+						url: pt + '_view.php?addNew_x=1&Embedded=1',
+						close: function(){
+							var field_id = $j('#' + pt + '_add_new').prevAll('input:hidden').eq(0).attr('id');
+							$j('#' + field_id + '-container').select2('focus').select2('focus');
+						},
+						size: 'full',
+						title: $j(this).attr('title')
+					});
+				});
+			}
+
+			/* find and hide parent links if field label has data 'parent_link' set to 'view_parent_hidden' */
+			$j('label[data-parent_link=view_parent_hidden]').each(function(){
+				$j(this).parents('.form-group').find('.view_parent').hide();
+			});
+
+			$j('form').on('click', '.view_parent', function(){
+				var pt = $j(this).attr('id').replace(/_view_parent$/, '');
+				if($j(this).prevAll('input:hidden').length){
+					var parent_id = $j(this).prevAll('input:hidden').eq(0).val();
+				}else{
+					var parent_id = $j(this).prevAll().children('input:hidden').eq(0).val();
+				}
+
+				/* handle radio lookups */
+				if($j(this).prevAll('[type=radio]').length){
+					parent_id = $j(this).prevAll('[type=radio]').eq(0).val();
+				}
+
+				if(parent_id != '{empty_value}'){
+					var parent_link = $j(this).parents('.form-group').children('label').data('parent_link');
+					switch(parent_link){
+						case 'view_parent_hidden':
+							break;
+						case 'view_parent_modal':
+							modal_window({
+								url: pt + '_view.php?Embedded=1&SelectedID=' + encodeURIComponent(parent_id),
+								close: function(){
+									var field_id = $j('#' + pt + '_view_parent').prevAll('input:hidden').eq(0).attr('id');
+									$j('#' + field_id + '-container').select2('focus').select2('focus');
+								},
+								size: 'full',
+								title: $j(this).attr('title')
+							});
+							break;
+						case 'view_parent_same_window':
+							window.location = pt + '_view.php?Embedded=' + (embedded_mode ? '1' : '') + '&SelectedID=' + encodeURIComponent(parent_id);
+							break;
+						case 'view_parent_new_window':
+							window.open(pt + '_view.php?SelectedID=' + encodeURIComponent(parent_id));
+							break;
+					}
+
+				}
+			});
+
+		});
+	</script>

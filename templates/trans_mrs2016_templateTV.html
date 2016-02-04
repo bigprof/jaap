@@ -1,0 +1,17 @@
+<!-- Edit this file to change the layout of each record in the table view -->
+<!-- To disable clicking of a field, remove the <%%select%%> and <%%endselect%%> formatters around it-->
+
+<!-- If you wish to hide the table view header that contains the column titles, -->
+<!-- open the generated 'trans_mrs2016_view.php' file in your text editor and -->
+<!-- change the value of $x->ShowTableHeader to 0 -->
+
+		<td id="trans_mrs2016-transaction_id-<%%VALUE(transaction_id)%%>" class="trans_mrs2016-transaction_id text-right"><%%SELECT%%><%%VALUE(transaction_id)%%><%%ENDSELECT%%></td>
+		<td id="trans_mrs2016-firstname-<%%VALUE(transaction_id)%%>" class="trans_mrs2016-firstname "><%%SELECT%%><%%VALUE(firstname)%%><%%ENDSELECT%%></td>
+		<td id="trans_mrs2016-lastname-<%%VALUE(transaction_id)%%>" class="trans_mrs2016-lastname "><%%SELECT%%><%%VALUE(lastname)%%><%%ENDSELECT%%></td>
+		<td id="trans_mrs2016-email-<%%VALUE(transaction_id)%%>" class="trans_mrs2016-email "><%%SELECT%%><%%VALUE(email)%%><%%ENDSELECT%%></td>
+		<td id="trans_mrs2016-phone-<%%VALUE(transaction_id)%%>" class="trans_mrs2016-phone "><%%SELECT%%><%%VALUE(phone)%%><%%ENDSELECT%%></td>
+		<td id="trans_mrs2016-quantity-<%%VALUE(transaction_id)%%>" class="trans_mrs2016-quantity text-right"><%%SELECT%%><%%VALUE(quantity)%%><%%ENDSELECT%%></td>
+		<td id="trans_mrs2016-amount-<%%VALUE(transaction_id)%%>" class="trans_mrs2016-amount text-right"><%%SELECT%%><%%VALUE(amount)%%><%%ENDSELECT%%></td>
+		<td id="trans_mrs2016-mailinglist-<%%VALUE(transaction_id)%%>" class="trans_mrs2016-mailinglist text-right"><%%SELECT%%><%%VALUE(mailinglist)%%><%%ENDSELECT%%></td>
+		<td id="trans_mrs2016-transactiondate-<%%VALUE(transaction_id)%%>" class="trans_mrs2016-transactiondate "><%%SELECT%%><%%VALUE(transactiondate)%%><%%ENDSELECT%%></td>
+		<td id="trans_mrs2016-seller-<%%VALUE(transaction_id)%%>" class="trans_mrs2016-seller "><%%SELECT%%><%%VALUE(seller)%%><%%ENDSELECT%%></td>

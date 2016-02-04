@@ -1,0 +1,10 @@
+<!-- Edit this file to change the layout of each record in the table view -->
+<!-- To disable clicking of a field, remove the <%%select%%> and <%%endselect%%> formatters around it-->
+
+<!-- If you wish to hide the table view header that contains the column titles, -->
+<!-- open the generated 'duck_mrs2016_view.php' file in your text editor and -->
+<!-- change the value of $x->ShowTableHeader to 0 -->
+
+		<td id="duck_mrs2016-duck_id-<%%VALUE(duck_id)%%>" class="duck_mrs2016-duck_id text-right"><%%SELECT%%><%%VALUE(duck_id)%%><%%ENDSELECT%%></td>
+		<td id="duck_mrs2016-transaction_id-<%%VALUE(duck_id)%%>" class="duck_mrs2016-transaction_id text-right"><%%SELECT%%><%%VALUE(transaction_id)%%><%%ENDSELECT%%></td>
+		<td id="duck_mrs2016-creationdate-<%%VALUE(duck_id)%%>" class="duck_mrs2016-creationdate "><%%SELECT%%><%%VALUE(creationdate)%%><%%ENDSELECT%%></td>
