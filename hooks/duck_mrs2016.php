@@ -193,6 +193,8 @@
 		$date_updated=$date_added=strtotime($data['creationdate']);
 		
 		$x=sql("INSERT INTO `membership_userrecords`(`tableName`, `pkValue`, `memberID`, `dateAdded`, `dateUpdated`, `groupID`) VALUES ('{$table_name}','{$pk}','{$member_id}','{$date_added}','{$date_updated}','{$group_id}')",$eo);
+		file_put_contents(dirname(__FILE__).'/debug.log', "x: $x\n", FILE_APPEND);
+
 		return TRUE;
 	}
 
