@@ -128,7 +128,6 @@
 				$footer='';
 				break;
 		}
-
 		return $footer;
 	}
 
@@ -191,7 +190,7 @@
 		for($i=0;$i<$data['quantity'];$i++){
 			sql("insert into `duck_mrs2016` (`transaction_id`,`creationdate`) values ('{$transaction_id}','{$creation_date}')",$eo);
 		}
-
+		
 		return TRUE;
 	}
 

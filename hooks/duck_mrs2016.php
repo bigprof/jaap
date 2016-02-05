@@ -180,6 +180,7 @@
 	*/
 
 	function duck_mrs2016_after_insert($data, $memberInfo, &$args){
+
 		/* insert ownership info into membership_userrecords manually */
 		$table_name='duck_mrs2016';
 		
@@ -188,11 +189,10 @@
 		$group_id=$memberInfo['groupID'];
 		
 		/* duck info */
-		$pk=$data['duck_id'];
-		$dateAdded=$data['creationdate'];
+		$pk=$data['selectedID'];
+		$date_updated=$date_added=strtotime($data['creationdate']);
 		
-		
-		sql("INSERT INTO `membership_userrecords`(`tableName`, `pkValue`, `memberID`, `dateAdded`, `dateUpdated`, `groupID`) VALUES ('{$table_name}','{$pk}','{$member_id}','{$date_added}','{$date_updated}','{$group_id}')",$eo);
+		$x=sql("INSERT INTO `membership_userrecords`(`tableName`, `pkValue`, `memberID`, `dateAdded`, `dateUpdated`, `groupID`) VALUES ('{$table_name}','{$pk}','{$member_id}','{$date_added}','{$date_updated}','{$group_id}')",$eo);
 		return TRUE;
 	}
 
