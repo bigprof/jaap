@@ -213,6 +213,37 @@
 		sql("INSERT INTO `duck_mrs2016` (`transaction_id`,`creationdate`) VALUES ".implode(',', $sql_to_duck_mrs2016),$eo);
 		sql("INSERT INTO `membership_userrecords`(`tableName`, `pkValue`, `memberID`, `dateAdded`, `dateUpdated`, `groupID`) VALUES ".implode(',', $sql_to_membership_userrecords) ,$eo);
 
+		
+		
+		/* send an email when a new transaction is placed */
+		ob_start(); 
+		?>
+		
+		
+		<table>
+		<tr><td><b> Badeendnummers </b></td><td> <?php echo $data['transaction_id']; ?> </td></tr>
+		<tr><td><b> Aantal badeenden </b></td><td>  <?php echo $data['quantity']; ?></td></tr>
+		<tr><td><b> Bedrag </b></td><td>  <?php echo $data['amount']; ?> euro</td></tr>
+		<tr><td><b> Naam </b></td><td> <?php echo $data['firstname']+' '+$data['lastname']; ?></td></tr>
+		<tr><td><b> Email </b></td><td> <?php echo $data['email']; ?></td></tr>
+		<tr><td><b> Telefoon </b></td><td> <?php echo $data['phone']; ?></td></tr>
+		<tr><td><b> Gekocht via </b></td><td> <?php echo $data['seller']; ?></td></tr>		
+		<tr><td><b> Datum </b></td><td> <?php echo date('m/d/Y',strtotime($data['transactiondate'])); ?></td></tr>
+		
+		
+		<?php
+		$mail_body=ob_get_contents();
+		ob_end_clean();
+		
+		mail(
+			'ola.yakout@gmail.com',
+			'New Transaction placed' . $data['transaction_id'],
+			$mail_body,
+			"From: ola.yakout@gmail.com".
+			"MIME-Version:1.0\r\n".
+			"Content-type:text/html; charset=iso-8859-1\r\n"
+		);
+		
 		return TRUE;
 	}
 
