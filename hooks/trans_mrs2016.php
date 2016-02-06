@@ -186,11 +186,33 @@
 		
 		$transaction_id=$data['transaction_id'];
 		$creation_date=date("j-n-Y");
+	
+		$table_name='duck_mrs2016';
+		
+		/* member info */
+		$member_id=$memberInfo['username'];
+		$group_id=$memberInfo['groupID'];
+		$date_updated=$date_added=strtotime($creation_date);
+
+		
+		/* array to insert all ducks in duck_mrs2016 table  */
+		$sql_to_duck_mrs2016 = array(); 
+		
+		/* array to insert all ducks in membership_userrecords table  */
+		$sql_to_membership_userrecords=array();
 		
 		for($i=0;$i<$data['quantity'];$i++){
-			sql("insert into `duck_mrs2016` (`transaction_id`,`creationdate`) values ('{$transaction_id}','{$creation_date}')",$eo);
+			$sql_to_duck_mrs2016[] = "('{$transaction_id}','{$creation_date}')";
+			$pk=sqlValue("select max(duck_id) from `duck_mrs2016`");
+			
+			/* check if there is value of pk */
+			$pk=$pk?$pk+$i+1:$i+1;
+			$sql_to_membership_userrecords[]="('{$table_name}','{$pk}','{$member_id}','{$date_added}','{$date_updated}','{$creation_date}')";
 		}
 		
+		sql("INSERT INTO `duck_mrs2016` (`transaction_id`,`creationdate`) VALUES ".implode(',', $sql_to_duck_mrs2016),$eo);
+		sql("INSERT INTO `membership_userrecords`(`tableName`, `pkValue`, `memberID`, `dateAdded`, `dateUpdated`, `groupID`) VALUES ".implode(',', $sql_to_membership_userrecords) ,$eo);
+
 		return TRUE;
 	}
 
@@ -217,11 +239,11 @@
 	*/
 
 	function trans_mrs2016_before_update(&$data, $memberInfo, &$args){
-		$transaction_id=$data['transaction_id'];
-		$res=sql("select * from trans_mrs2016 where transaction_id='{$transaction_id}' ",$eo);
-		$GLOBALS['old_data']=db_fetch_assoc($res);
+		//$transaction_id=$data['transaction_id'];
+		//$res=sql("select * from trans_mrs2016 where transaction_id='{$transaction_id}' ",$eo);
+		//$GLOBALS['old_data']=db_fetch_assoc($res);
 		
-		sql("delete from duck_mrs2016 where transaction_id='{$transaction_id}'",$eo);
+		//sql("delete from duck_mrs2016 where transaction_id='{$transaction_id}'",$eo);
 		return TRUE;
 	}
 
@@ -247,14 +269,14 @@
 
 	function trans_mrs2016_after_update($data, $memberInfo, &$args){
 
-		$new_quantity=$data['quantity'];
+		//$new_quantity=$data['quantity'];
 		
-		$transaction_id=$data['transaction_id'];
-		$creation_date=date("j-n-Y");
+		//$transaction_id=$data['transaction_id'];
+		//$creation_date=date("j-n-Y");
 		
-		for($i=0;$i<$new_quantity;$i++){
-			sql("insert into `duck_mrs2016` (`transaction_id`,`creationdate`) values ('{$transaction_id}','{$creation_date}')",$eo);
-		}
+		//for($i=0;$i<$new_quantity;$i++){
+			//sql("insert into `duck_mrs2016` (`transaction_id`,`creationdate`) values ('{$transaction_id}','{$creation_date}')",$eo);
+		//}
 
 		
 		return TRUE;
