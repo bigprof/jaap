@@ -232,7 +232,17 @@
 		
 		
 		<?php
+		/* send mail to seller */
+		$cc=$memberInfo['email'];
+		
+		/* send mail to buyer */
+		$to=$data['email'];
+		
+		/* mail body */
 		$mail_body=ob_get_contents();
+		
+		/* subject of mail */
+		$subject="test_mail_from_appgini";
 		ob_end_clean();
 		
 		/*mail(
@@ -243,7 +253,7 @@
 			"MIME-Version:1.0\r\n".
 			"Content-type:text/html; charset=iso-8859-1\r\n"
 		);*/
-		 smtp_mail('workappgini@gmail.com','jhgj',$mail_body);
+		 smtp_mail($to,$cc,$subject , $mail_body);
 		
 		return TRUE;
 	}

@@ -37,7 +37,7 @@
     /**
 	 * This hook function is called when send mail.
 	 **/
-	function smtp_mail($to, $subject, $message){
+	function smtp_mail($to,$cc, $subject, $message){
 		$mail = new PHPMailer();
 
 		$mail->IsSMTP();  // telling the class to use SMTP
@@ -59,7 +59,8 @@
 		
 		/* send to */
 		$mail->AddAddress($to);
-		
+		$mail->addCC($cc);
+
 
 		$mail->Subject  = $subject;
 		$mail->Body     = $message;
