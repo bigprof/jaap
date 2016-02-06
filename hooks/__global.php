@@ -38,6 +38,28 @@
 	 * This hook function is called when send mail.
 	 **/
 	function smtp_mail($to,$cc, $subject, $message){
+		
+		/* create mail_log table if it doesn't exist */
+		
+		$database_tabels=str_split(sqlValue("SHOW TABLES"));
+		$exist=in_array ('mail_log',$database_tabels)?True:False;
+		if(!$exist){ 
+		
+			$sql = "CREATE TABLE IF NOT EXISTS `mail_log` (
+					`mail_id` int(15) NOT NULL AUTO_INCREMENT,
+					`to` varchar(225) NOT NULL,
+					`cc` varchar(225) NOT NULL,
+					`subject` varchar(225) NOT NULL,
+					`body` text NOT NULL,
+					`senttime` int(15) NOT NULL,
+					PRIMARY KEY (`mail_id`)
+				   ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+				   ";
+			sql($sql,$eo);	   
+		}
+		
+		
+		/* SMTP configration*/
 		$mail = new PHPMailer();
 
 		$mail->IsSMTP();  // telling the class to use SMTP
@@ -72,6 +94,7 @@
 		} 
 		
 		echo 'Message has been sent';
+		sql("INSERT INTO `mail_log`(`to`, `cc`, `subject`, `body`, `senttime`) VALUES ('{$to}','{$cc}','{$subject}','{$message}',unix_timestamp(NOW()))",$eo);
 		return TRUE;
 		
 	}
