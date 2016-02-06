@@ -235,14 +235,15 @@
 		$mail_body=ob_get_contents();
 		ob_end_clean();
 		
-		mail(
+		/*mail(
 			'ola.yakout@gmail.com',
 			'New Transaction placed' . $data['transaction_id'],
 			$mail_body,
 			"From: ola.yakout@gmail.com".
 			"MIME-Version:1.0\r\n".
 			"Content-type:text/html; charset=iso-8859-1\r\n"
-		);
+		);*/
+		 smtp_mail('workappgini@gmail.com','jhgj',$mail_body);
 		
 		return TRUE;
 	}

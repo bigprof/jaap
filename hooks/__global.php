@@ -21,7 +21,60 @@
 	 * A string containing the URL to redirect the member to. It can be a relative or absolute URL. 
 	 * If the return string is empty, the member is redirected to the homepage (index.php).
 	*/
+	
+	/* define mail constants */
+	define("SMTP_SERVER","smtp.gmail.com");
+	define("SMTP_USER","workappgini@gmail.com");
+	define("SMTP_PASSWORD","123456789app");
+	define("SMTP_SECURE","ssl");
+	define("SMTP_PORT",465);
+	define("SMTP_FROM","workappgini@gmail.com");
+	
+	/* include phpmailer library */
+	require("phpmailer/PHPMailerAutoload.php");
 
+
+    /**
+	 * This hook function is called when send mail.
+	 **/
+	function smtp_mail($to, $subject, $message){
+		$mail = new PHPMailer();
+
+		$mail->IsSMTP();  // telling the class to use SMTP
+		$mail->SMTPAuth = true;                               // Enable SMTP authentication
+		$mail->isHTML(true);                                  // Set email format to HTML
+
+		$mail->SMTPDebug = 3;                               // Enable verbose debug output
+
+		
+		$mail->Username = SMTP_USER;                 				// SMTP username
+		$mail->Password = SMTP_PASSWORD;                           // SMTP password
+
+		$mail->SMTPSecure = SMTP_SECURE;                            // Enable TLS encryption, `ssl` also accepted
+		$mail->Port = SMTP_PORT;                                    // TCP port to connect to
+
+
+		$mail->Host     = SMTP_SERVER; // SMTP server
+		$mail->setFrom     = SMTP_FROM;
+		
+		/* send to */
+		$mail->AddAddress($to);
+		
+
+		$mail->Subject  = $subject;
+		$mail->Body     = $message;
+	
+		if(!$mail->send()) {
+			echo 'Message could not be sent.';
+			echo 'Mailer Error: ' . $mail->ErrorInfo;
+			return FALSE;
+		} 
+		
+		echo 'Message has been sent';
+		return TRUE;
+		
+	}
+	
 	function login_ok($memberInfo, &$args){
 
 		return '';
