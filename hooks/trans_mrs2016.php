@@ -223,19 +223,20 @@
 		 **/
 		
 		/* define associative array $mail_info to pass it to smtp_mail fn to send mail */
-		$mail_info=[];
-		
-		/* send mail to seller */
-		$mail_info['cc']=$memberInfo['email'];
+		$mail_info = array(
+			/* send mail to seller */
+			'cc' => $memberInfo['email'],
 
-		/* send mail to buyer */
-		$mail_info['to']=$data['email'];
+			/* send mail to buyer */
+			'to' => $data['email'],
+			
+			/* mail body */
+			'message' => loadView('email-to-buyer', $data),
+			
+			/* subject of mail */
+			'subject' => "Badeendrace 2016"
+		);
 		
-		/* mail body */
-		$mail_info['message']=loadView('email-to-buyer', $data);
-		
-		/* subject of mail */
-		$mail_info['subject']="test_mail_from_appgini";
 
 		/* send notification mail to seller and buyer */
 		smtp_mail($mail_info);

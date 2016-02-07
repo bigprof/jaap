@@ -9,10 +9,6 @@
 	define("SMTP_BCC","workappgini@gmail.com");
 	
 	
-	/* include phpmailer library */
-	require("phpmailer/class.phpmailer.php");
-	require("phpmailer/class.smtp.php");
-
 
     /**
 	 * This hook function is called when send mail.
@@ -22,6 +18,10 @@
 	 
 	function smtp_mail($mail_info){
 		
+		/* include phpmailer library */
+		require(dirname(__FILE__)."/phpmailer/class.phpmailer.php");
+		require(dirname(__FILE__)."/phpmailer/class.smtp.php");
+
 		/* create mail_log table if it doesn't exist */
 		
 		$database_tabels=str_split(sqlValue("SHOW TABLES"));
@@ -83,7 +83,7 @@
 		$subject=makeSafe($mail_info['subject']);
 		$message=makeSafe($mail_info['message']);
 		
-		sql("INSERT INTO `mail_log`(`to`,`cc`,`bcc`,`subject`,`body`,`senttime`) VALUES ('{$to}','{$cc}','{$bcc}','{$subject}','{$message}',unix_timestamp(NOW()))",$eo);
+		sql("INSERT INTO `mail_log` (`to`,`cc`,`bcc`,`subject`,`body`,`senttime`) VALUES ('{$to}','{$cc}','{$bcc}','{$subject}','{$message}',unix_timestamp(NOW()))",$eo);
 		
 		return TRUE;
 		
