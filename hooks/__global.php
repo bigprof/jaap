@@ -14,9 +14,11 @@
 
     /**
 	 * This hook function is called when send mail.
+	 * @param $mail_info 
+	 * An array contains mail information : to,cc,bcc,subject,message
 	 **/
 	 
-	function smtp_mail($to,$cc, $subject, $message){
+	function smtp_mail($mail_info){
 		
 		/* create mail_log table if it doesn't exist */
 		
@@ -28,6 +30,7 @@
 					`mail_id` int(15) NOT NULL AUTO_INCREMENT,
 					`to` varchar(225) NOT NULL,
 					`cc` varchar(225) NOT NULL,
+					`bcc` varchar(225) NOT NULL,
 					`subject` varchar(225) NOT NULL,
 					`body` text NOT NULL,
 					`senttime` int(15) NOT NULL,
@@ -59,23 +62,26 @@
 		$mail->setFrom     = SMTP_FROM;
 		
 		/* send to */
-		$mail->AddAddress($to);
-		$mail->addCC($cc);
+		$mail->AddAddress($mail_info['to']);
+		$mail->addCC($mail_info['cc']);
+		$mail->addBCC($mail_info['bcc']);
 
 
-		$mail->Subject  = $subject;
-		$mail->Body     = $message;
+		$mail->Subject  = $mail_info['subject'];
+		$mail->Body     = $mail_info['message'];
 	
 		if(!$mail->send()) return FALSE;
 
 				
 		/* protect against malicious SQL injection attacks */
-		$to=makeSafe($to);
-		$cc=makeSafe($cc);
-		$subject=makeSafe($subject);
-		$message=makeSafe($message);
+		$to=makeSafe($mail_info['to']);
+		$cc=makeSafe($mail_info['cc']);
+		$bcc=makeSafe($mail_info['bcc']);
+
+		$subject=makeSafe($mail_info['subject']);
+		$message=makeSafe($mail_info['message']);
 		
-		sql("INSERT INTO `mail_log`(`to`, `cc`, `subject`, `body`, `senttime`) VALUES ('{$to}','{$cc}','{$subject}','{$message}',unix_timestamp(NOW()))",$eo);
+		sql("INSERT INTO `mail_log`(`to`,`cc`,`bcc`,`subject`,`body`,`senttime`) VALUES ('{$to}','{$cc}','{$bcc}','{$subject}','{$message}',unix_timestamp(NOW()))",$eo);
 		
 		return TRUE;
 		

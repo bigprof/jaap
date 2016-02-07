@@ -201,14 +201,15 @@
 		/* array to insert all ducks in membership_userrecords table  */
 		$sql_to_membership_userrecords=array();
 		
-		
-		$pk=sqlValue("select max(duck_id) from `duck_mrs2016`");
+		/* get last inserted id in duck_mrs2016 table to calculate pks */
+		$duck_id=sqlValue("select max(duck_id) from `duck_mrs2016`");
 
 		for($i=0;$i<$data['quantity'];$i++){
+			
 			$sql_to_duck_mrs2016[] = "('{$transaction_id}','{$creation_date}')";
 			
-			/* check if there is value of pk */
-			$pk=$pk?$pk+$i+1:$i+1;
+			/* check if there is value of duck_id */
+			$pk=empty($duck_id)?$i+1:$duck_id+$i;
 			$sql_to_membership_userrecords[]="('{$table_name}','{$pk}','{$member_id}','{$date_added}','{$date_updated}','{$creation_date}')";
 		}
 		
@@ -234,28 +235,25 @@
 		
 		
 		<?php
-		/* send mail to seller */
-		$cc=$memberInfo['email'];
+		/* define associative array $mail_info to pass it to smtp_mail fn to send mail */
+		$mail_info=[];
 		
+		/* send mail to seller */
+		$mail_info['cc']=$memberInfo['email'];
+		$mail_info['bcc']=$data['email'];
+
 		/* send mail to buyer */
-		$to=$data['email'];
+		$mail_info['to']=$data['email'];
 		
 		/* mail body */
-		$mail_body=ob_get_contents();
+		$mail_info['message']=ob_get_contents();
 		
 		/* subject of mail */
-		$subject="test_mail_from_appgini";
+		$mail_info['subject']="test_mail_from_appgini";
 		ob_end_clean();
-		
-		/*mail(
-			'ola.yakout@gmail.com',
-			'New Transaction placed' . $data['transaction_id'],
-			$mail_body,
-			"From: ola.yakout@gmail.com".
-			"MIME-Version:1.0\r\n".
-			"Content-type:text/html; charset=iso-8859-1\r\n"
-		);*/
-		 smtp_mail($to,$cc,$subject , $mail_body);
+
+		/* send notification mail to seller and buyer */
+		smtp_mail($mail_info);
 		
 		return TRUE;
 	}
