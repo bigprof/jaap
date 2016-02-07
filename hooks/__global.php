@@ -1,27 +1,4 @@
 <?php
-	/**
-	 * @file
-	 * This file contains hook functions that get called when a new member signs up, 
-	 * when a member signs in successfully and when a member fails to sign in.
-	*/
-
-	/**
-	 * This hook function is called when a member successfully signs in. 
-	 * It can be used for example to redirect members to specific pages rather than the home page, 
-	 * or to save a log of members' activity, ... etc.
-	 * 
-	 * @param $memberInfo
-	 * An array containing logged member's info
-	 * @see http://bigprof.com/appgini/help/working-with-generated-web-database-application/hooks/memberInfo
-	 * 
-	 * @param $args
-	 * An empty array that is passed by reference. It's currently not used but is reserved for future uses.
-	 * 
-	 * @return
-	 * A string containing the URL to redirect the member to. It can be a relative or absolute URL. 
-	 * If the return string is empty, the member is redirected to the homepage (index.php).
-	*/
-	
 	/* define mail constants */
 	define("SMTP_SERVER","smtp.gmail.com");
 	define("SMTP_USER","workappgini@gmail.com");
@@ -31,12 +8,14 @@
 	define("SMTP_FROM","workappgini@gmail.com");
 	
 	/* include phpmailer library */
-	require("phpmailer/PHPMailerAutoload.php");
+	require("phpmailer/class.phpmailer.php");
+	require("phpmailer/class.smtp.php");
 
 
     /**
 	 * This hook function is called when send mail.
 	 **/
+	 
 	function smtp_mail($to,$cc, $subject, $message){
 		
 		/* create mail_log table if it doesn't exist */
@@ -59,7 +38,7 @@
 		}
 		
 		
-		/* SMTP configration*/
+		/* SMTP configuration*/
 		$mail = new PHPMailer();
 
 		$mail->IsSMTP();  // telling the class to use SMTP
@@ -87,17 +66,43 @@
 		$mail->Subject  = $subject;
 		$mail->Body     = $message;
 	
-		if(!$mail->send()) {
-			echo 'Message could not be sent.';
-			echo 'Mailer Error: ' . $mail->ErrorInfo;
-			return FALSE;
-		} 
+		if(!$mail->send()) return FALSE;
+
+				
+		/* protect against malicious SQL injection attacks */
+		$to=makeSafe($to);
+		$cc=makeSafe($cc);
+		$subject=makeSafe($subject);
+		$message=makeSafe($message);
 		
-		echo 'Message has been sent';
 		sql("INSERT INTO `mail_log`(`to`, `cc`, `subject`, `body`, `senttime`) VALUES ('{$to}','{$cc}','{$subject}','{$message}',unix_timestamp(NOW()))",$eo);
+		
 		return TRUE;
 		
 	}
+	
+    /**
+	 * @file
+	 * This file contains hook functions that get called when a new member signs up, 
+	 * when a member signs in successfully and when a member fails to sign in.
+	*/
+
+	/**
+	 * This hook function is called when a member successfully signs in. 
+	 * It can be used for example to redirect members to specific pages rather than the home page, 
+	 * or to save a log of members' activity, ... etc.
+	 * 
+	 * @param $memberInfo
+	 * An array containing logged member's info
+	 * @see http://bigprof.com/appgini/help/working-with-generated-web-database-application/hooks/memberInfo
+	 * 
+	 * @param $args
+	 * An empty array that is passed by reference. It's currently not used but is reserved for future uses.
+	 * 
+	 * @return
+	 * A string containing the URL to redirect the member to. It can be a relative or absolute URL. 
+	 * If the return string is empty, the member is redirected to the homepage (index.php).
+	*/
 	
 	function login_ok($memberInfo, &$args){
 

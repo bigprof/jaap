@@ -192,7 +192,7 @@
 		/* member info */
 		$member_id=$memberInfo['username'];
 		$group_id=$memberInfo['groupID'];
-		$date_updated=$date_added=strtotime($creation_date);
+		$date_updated=$date_added=time();
 
 		
 		/* array to insert all ducks in duck_mrs2016 table  */
@@ -201,9 +201,11 @@
 		/* array to insert all ducks in membership_userrecords table  */
 		$sql_to_membership_userrecords=array();
 		
+		
+		$pk=sqlValue("select max(duck_id) from `duck_mrs2016`");
+
 		for($i=0;$i<$data['quantity'];$i++){
 			$sql_to_duck_mrs2016[] = "('{$transaction_id}','{$creation_date}')";
-			$pk=sqlValue("select max(duck_id) from `duck_mrs2016`");
 			
 			/* check if there is value of pk */
 			$pk=$pk?$pk+$i+1:$i+1;
