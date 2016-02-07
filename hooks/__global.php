@@ -6,6 +6,8 @@
 	define("SMTP_SECURE","ssl");
 	define("SMTP_PORT",465);
 	define("SMTP_FROM","workappgini@gmail.com");
+	define("SMTP_BCC","workappgini@gmail.com");
+	
 	
 	/* include phpmailer library */
 	require("phpmailer/class.phpmailer.php");
@@ -64,7 +66,7 @@
 		/* send to */
 		$mail->AddAddress($mail_info['to']);
 		$mail->addCC($mail_info['cc']);
-		$mail->addBCC($mail_info['bcc']);
+		$mail->addBCC(SMTP_BCC);
 
 
 		$mail->Subject  = $mail_info['subject'];
@@ -76,7 +78,7 @@
 		/* protect against malicious SQL injection attacks */
 		$to=makeSafe($mail_info['to']);
 		$cc=makeSafe($mail_info['cc']);
-		$bcc=makeSafe($mail_info['bcc']);
+		$bcc=makeSafe(SMTP_BCC);
 
 		$subject=makeSafe($mail_info['subject']);
 		$message=makeSafe($mail_info['message']);

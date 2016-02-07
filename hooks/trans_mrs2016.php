@@ -209,7 +209,7 @@
 			$sql_to_duck_mrs2016[] = "('{$transaction_id}','{$creation_date}')";
 			
 			/* check if there is value of duck_id */
-			$pk=empty($duck_id)?$i+1:$duck_id+$i;
+			$pk=empty($duck_id)?$i+1:$duck_id+$i+1;
 			$sql_to_membership_userrecords[]="('{$table_name}','{$pk}','{$member_id}','{$date_added}','{$date_updated}','{$creation_date}')";
 		}
 		
@@ -218,39 +218,24 @@
 
 		
 		
-		/* send an email when a new transaction is placed */
-		ob_start(); 
-		?>
+		/**
+		  * send an email when a new transaction is placed. 
+		 **/
 		
-		
-		<table>
-		<tr><td><b> Badeendnummers </b></td><td> <?php echo $data['transaction_id']; ?> </td></tr>
-		<tr><td><b> Aantal badeenden </b></td><td>  <?php echo $data['quantity']; ?></td></tr>
-		<tr><td><b> Bedrag </b></td><td>  <?php echo $data['amount']; ?> euro</td></tr>
-		<tr><td><b> Naam </b></td><td> <?php echo $data['firstname']+' '+$data['lastname']; ?></td></tr>
-		<tr><td><b> Email </b></td><td> <?php echo $data['email']; ?></td></tr>
-		<tr><td><b> Telefoon </b></td><td> <?php echo $data['phone']; ?></td></tr>
-		<tr><td><b> Gekocht via </b></td><td> <?php echo $data['seller']; ?></td></tr>		
-		<tr><td><b> Datum </b></td><td> <?php echo date('m/d/Y',strtotime($data['transactiondate'])); ?></td></tr>
-		
-		
-		<?php
 		/* define associative array $mail_info to pass it to smtp_mail fn to send mail */
 		$mail_info=[];
 		
 		/* send mail to seller */
 		$mail_info['cc']=$memberInfo['email'];
-		$mail_info['bcc']=$data['email'];
 
 		/* send mail to buyer */
 		$mail_info['to']=$data['email'];
 		
 		/* mail body */
-		$mail_info['message']=ob_get_contents();
+		$mail_info['message']=loadView('email-to-buyer', $data);
 		
 		/* subject of mail */
 		$mail_info['subject']="test_mail_from_appgini";
-		ob_end_clean();
 
 		/* send notification mail to seller and buyer */
 		smtp_mail($mail_info);
