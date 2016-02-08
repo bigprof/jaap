@@ -6,7 +6,8 @@
 	define("SMTP_SECURE","ssl");
 	define("SMTP_PORT",465);
 	define("SMTP_FROM","workappgini@gmail.com");
-	define("SMTP_BCC","workappgini@gmail.com");
+	define("SMTP_FROM_NAME","Jaap App");
+	define("SMTP_BCC","test_bcc@gneady.com");
 	
 	
 
@@ -46,11 +47,11 @@
 		/* SMTP configuration*/
 		$mail = new PHPMailer();
 
-		$mail->IsSMTP();  // telling the class to use SMTP
+		$mail->isSMTP();  // telling the class to use SMTP
 		$mail->SMTPAuth = true;                               // Enable SMTP authentication
 		$mail->isHTML(true);                                  // Set email format to HTML
 
-		$mail->SMTPDebug = 3;                               // Enable verbose debug output
+		$mail->SMTPDebug = 0;                               // Enable verbose debug output
 
 		
 		$mail->Username = SMTP_USER;                 				// SMTP username
@@ -59,12 +60,14 @@
 		$mail->SMTPSecure = SMTP_SECURE;                            // Enable TLS encryption, `ssl` also accepted
 		$mail->Port = SMTP_PORT;                                    // TCP port to connect to
 
+		$mail->FromName = SMTP_FROM_NAME;
+		$mail->From = SMTP_FROM;
 
 		$mail->Host     = SMTP_SERVER; // SMTP server
-		$mail->setFrom     = SMTP_FROM;
+		$mail->setFrom(SMTP_FROM, SMTP_FROM_NAME);
 		
 		/* send to */
-		$mail->AddAddress($mail_info['to']);
+		$mail->addAddress($mail_info['to']);
 		$mail->addCC($mail_info['cc']);
 		$mail->addBCC(SMTP_BCC);
 

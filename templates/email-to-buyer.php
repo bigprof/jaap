@@ -10,13 +10,13 @@ Het is de bedoeling, dat je afrekent met de persoon, bij wie je de eendjes beste
 <p>
 	<?php $td_style = 'padding: 4px;'; ?>
 	<table style="background-color:#B0DE01; padding: 10px;">
-		<tr><td style="<?php echo $td_style; ?>"><b> Badeendnummers </b></td>   <td style="<?php echo $td_style; ?>"><?php echo $transaction_id; ?> </td></tr>
+		<tr><td style="<?php echo $td_style; ?>"><b> Badeendnummers </b></td>   <td style="<?php echo $td_style; ?>"><?php echo $duck_ids; ?> </td></tr>
 		<tr><td style="<?php echo $td_style; ?>"><b> Aantal badeenden </b></td> <td style="<?php echo $td_style; ?>"><?php echo $quantity; ?></td></tr>
 		<tr><td style="<?php echo $td_style; ?>"><b> Bedrag </b></td>           <td style="<?php echo $td_style; ?>"><?php echo $amount; ?> euro</td></tr>
 		<tr><td style="<?php echo $td_style; ?>"><b> Naam </b></td>             <td style="<?php echo $td_style; ?>"><?php echo $firstname . ' ' . $lastname; ?></td></tr>
 		<tr><td style="<?php echo $td_style; ?>"><b> Email </b></td>            <td style="<?php echo $td_style; ?>"><?php echo $email; ?></td></tr>
 		<tr><td style="<?php echo $td_style; ?>"><b> Telefoon </b></td>         <td style="<?php echo $td_style; ?>"><?php echo $phone; ?></td></tr>
-		<tr><td style="<?php echo $td_style; ?>"><b> Gekocht via </b></td>      <td style="<?php echo $td_style; ?>"><?php echo $seller; ?></td></tr>		
+		<tr><td style="<?php echo $td_style; ?>"><b> Gekocht via </b></td>      <td style="<?php echo $td_style; ?>"><?php echo $seller_full_name; ?></td></tr>		
 		<tr><td style="<?php echo $td_style; ?>"><b> Datum </b></td>            <td style="<?php echo $td_style; ?>"><?php echo date('d-m-Y', strtotime($transactiondate)); ?></td></tr>
 	</table>
 </p>

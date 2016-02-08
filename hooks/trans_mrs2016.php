@@ -203,6 +203,9 @@
 		
 		/* get last inserted id in duck_mrs2016 table to calculate pks */
 		$duck_id=sqlValue("select max(duck_id) from `duck_mrs2016`");
+		
+		/* list of all duck id's */
+		$duck_ids = array();
 
 		for($i=0;$i<$data['quantity'];$i++){
 			
@@ -211,12 +214,18 @@
 			/* check if there is value of duck_id */
 			$pk=empty($duck_id)?$i+1:$duck_id+$i+1;
 			$sql_to_membership_userrecords[]="('{$table_name}','{$pk}','{$member_id}','{$date_added}','{$date_updated}','{$creation_date}')";
+			
+			$duck_ids[] = $pk;
 		}
 		
 		sql("INSERT INTO `duck_mrs2016` (`transaction_id`,`creationdate`) VALUES ".implode(',', $sql_to_duck_mrs2016),$eo);
 		sql("INSERT INTO `membership_userrecords`(`tableName`, `pkValue`, `memberID`, `dateAdded`, `dateUpdated`, `groupID`) VALUES ".implode(',', $sql_to_membership_userrecords) ,$eo);
 
+		/* prepare list of duck IDs for email */
+		$data['duck_ids'] = implode(' - ', $duck_ids);
 		
+		/* seller's full name */
+		$data['seller_full_name'] = $memberInfo['custom'][0];
 		
 		/**
 		  * send an email when a new transaction is placed. 
